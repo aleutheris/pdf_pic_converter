@@ -9,10 +9,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a directory for the shared folder
-RUN mkdir -p /shared
+RUN mkdir -p /files
 
 # Set the working directory
-WORKDIR /shared
+WORKDIR /files
 
 # Set the default command to sleep to keep the container running
 CMD ["sleep", "infinity"]

@@ -4,8 +4,8 @@ import subprocess
 import pexpect
 
 PROJECT_DIRECTORY = "pdf_pic_converter"
-FILES_DIRECTORY = "/files"
-IMAGE_NAME = "pdf_pic_converter:latest"
+FILES_DIRECTORY = "files"
+IMAGE_NAME = "pdf-pic-converter"
 
 # If docker is not installed, install it
 # build image
@@ -85,9 +85,9 @@ def get_image_ids_by_tag(tag, server_address=None):
 
 def main():
     try:
-        run_command(["docker", "build", "-t", IMAGE_NAME, "."])
+        run_command(["docker", "build", "-t", IMAGE_NAME+":latest", "."])
 
-        command = f"docker run --name converter -v ./{FILES_DIRECTORY}:/shared -it {IMAGE_NAME} /bin/bash"
+        command = f"docker run --name converter -v ./{FILES_DIRECTORY}:/{FILES_DIRECTORY} -it {IMAGE_NAME} /bin/bash"
         child = pexpect.spawn(command)
 
         child.expect("# ")
@@ -96,12 +96,12 @@ def main():
         child.expect("# ")
 
         file_name = input("Enter the name of the PDF file: ")
-        child.sendline(f"pdftoppm /shared/{file_name}.pdf /shared/{file_name} -jpeg")
+        child.sendline(f"pdftoppm /{FILES_DIRECTORY}/{file_name}.pdf /{FILES_DIRECTORY}/{file_name} -jpeg")
         child.expect("# ")
 
         input("Press enter when you are done editing the images...")
 
-        child.sendline(f"convert /shared/{file_name}.jpg /shared/New_{file_name}.pdf")
+        child.sendline(f"convert *{file_name}.jpg AA_new_{file_name}.pdf")
         child.expect("# ")
 
         child.interact()
@@ -124,3 +124,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
