@@ -6,6 +6,7 @@ import pexpect
 PROJECT_DIRECTORY = "pdf_pic_converter"
 FILES_DIRECTORY = "files"
 IMAGE_NAME = "pdf-pic-converter"
+FILE_NAME_PREFIX = "AA_new_"
 
 # If docker is not installed, install it
 # build image
@@ -101,10 +102,15 @@ def main():
 
         input("Press enter when you are done editing the images...")
 
-        child.sendline(f"convert {file_name}*.jpg AA_new_{file_name}.pdf")
+        child.sendline(f"convert {file_name}*.jpg {FILE_NAME_PREFIX}{file_name}.pdf")
         child.expect("# ")
 
         child.close()
+
+        run_command(["docker", "cp", "-r" f"{PROJECT_DIRECTORY}/{FILES_DIRECTORY}", "{FILES_DIRECTORY}"])
+        run_command(["docker", "mv", f"{FILES_DIRECTORY}/{FILE_NAME_PREFIX}{file_name}.pdf", "."])
+
+        clean_up()
 
     except pexpect.exceptions.ExceptionPexpect as e:
         print(f"pexpect error: {e}")
