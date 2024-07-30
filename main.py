@@ -107,8 +107,8 @@ def main():
 
         child.close()
 
-        run_command(["docker", "cp", "-r" f"{PROJECT_DIRECTORY}/{FILES_DIRECTORY}", "{FILES_DIRECTORY}"])
-        run_command(["docker", "mv", f"{FILES_DIRECTORY}/{FILE_NAME_PREFIX}{file_name}.pdf", "."])
+        run_command(["mv", f"{FILES_DIRECTORY}/{FILE_NAME_PREFIX}{file_name}.pdf", "../"])
+        run_command(["cp", "-r", f"{FILES_DIRECTORY}", "../"])
 
         clean_up()
 

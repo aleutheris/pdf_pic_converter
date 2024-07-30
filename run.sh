@@ -22,12 +22,7 @@ cd "$PROJECT_DIRECTORY"
 wget https://raw.githubusercontent.com/aleutheris/pdf_pic_converter/main/main.py
 wget https://raw.githubusercontent.com/aleutheris/pdf_pic_converter/main/Dockerfile
 
-# python3 -m venv .venv
-# source .venv/bin/activate
-
 python3 main.py
-
-# .venv/bin/deactivate
 
 cd ..
 rm -rf "$PROJECT_DIRECTORY"
