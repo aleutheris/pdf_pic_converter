@@ -96,15 +96,13 @@ def main():
         child.expect("# ")
 
         file_name = input("Enter the name of the PDF file: ")
-        child.sendline(f"pdftoppm /{FILES_DIRECTORY}/{file_name}.pdf /{FILES_DIRECTORY}/{file_name} -jpeg")
+        child.sendline(f"pdftoppm {file_name}.pdf {file_name} -jpeg")
         child.expect("# ")
 
         input("Press enter when you are done editing the images...")
 
-        child.sendline(f"convert *{file_name}.jpg AA_new_{file_name}.pdf")
+        child.sendline(f"convert {file_name}*.jpg AA_new_{file_name}.pdf")
         child.expect("# ")
-
-        child.interact()
 
         child.close()
 
@@ -124,4 +122,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
