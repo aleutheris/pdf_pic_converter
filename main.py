@@ -110,6 +110,10 @@ def main():
         child.expect("# ")
 
         file_name = choose_file()
+        if not file_name:
+            child.close()
+            clean_up()
+            return
         child.sendline(f"pdftoppm {file_name}.pdf {file_name} -jpeg")
         child.expect("# ")
 
