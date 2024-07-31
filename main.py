@@ -128,8 +128,7 @@ def main():
 
         child.close()
 
-        run_command(["mv", f"{FILES_DIRECTORY}/{FILE_NAME_PREFIX}{file_name}.pdf", "../"])
-        run_command(["cp", "-r", f"{FILES_DIRECTORY}", "../"])
+        run_command(["mv", f"{FILES_DIRECTORY}/{FILE_NAME_PREFIX}{file_name}.pdf", "./"])
 
         clean_up()
 
