@@ -34,6 +34,3 @@ pip3 install -r requirements.txt
 python3 main.py
 
 deactivate
-
-cd ..
-rm -rf "$PROJECT_DIRECTORY"
