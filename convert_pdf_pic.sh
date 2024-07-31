@@ -34,3 +34,5 @@ pip3 install -r requirements.txt
 python3 main.py
 
 deactivate
+
+rm -f Dockerfile requirements.txt main.py
