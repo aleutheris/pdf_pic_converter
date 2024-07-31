@@ -54,24 +54,11 @@ def run_command(command):
     return process.returncode
 
 
-def clean_up():
-    container_ids = get_container_ids_by_tag(IMAGE_NAME)
-    for container_id in container_ids:
-        run_command(["docker", "rm", container_id])
-
-    image_ids = get_image_ids_by_tag(IMAGE_NAME)
-    for image_id in image_ids:
-        run_command(["docker", "rmi", image_id])
-
-
 def get_container_ids_by_tag(tag):
     command = ["docker", "ps", "-a", "--filter", f"ancestor={tag}", "--format", "{{.ID}}"]
 
     try:
-        result = subprocess.run(
-            command, capture_output=True, text=True, check=True
-        )
-
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
         container_ids = result.stdout.strip().split('\n')
         return container_ids
 
@@ -80,20 +67,29 @@ def get_container_ids_by_tag(tag):
         return []
 
 
-def get_image_ids_by_tag(tag, server_address=None):
+def get_image_ids_by_tag(tag):
     command = ["docker", "images", tag, "-q"]
 
     try:
-        result = subprocess.run(
-            command, capture_output=True, text=True, check=True
-        )
-
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
         image_ids = result.stdout.strip().split('\n')
         return image_ids
 
     except subprocess.CalledProcessError as e:
         print("Error running docker command:", e)
         return []
+
+
+def clean_up():
+    container_ids = get_container_ids_by_tag(f"{IMAGE_NAME}:latest")
+    for container_id in container_ids:
+        if container_id:
+            run_command(["docker", "rm", container_id])
+
+    image_ids = get_image_ids_by_tag(f"{IMAGE_NAME}:latest")
+    for image_id in image_ids:
+        if image_id:
+            run_command(["docker", "rmi", image_id])
 
 
 def main():
@@ -106,10 +102,13 @@ def main():
             return
 
         file_name = os.path.basename(file_path)
+        file_name = file_name[:-4]
+
+        print(f"File name: {file_name}")
 
         run_command(["cp", file_path, f"./{FILES_DIRECTORY}/"])
 
-        run_command(["docker", "build", "-t", IMAGE_NAME+":latest", "."])
+        run_command(["docker", "build", "-t", f"{IMAGE_NAME}:latest", "."])
 
         command = f"docker run --name converter -v ./{FILES_DIRECTORY}:/{FILES_DIRECTORY} -it {IMAGE_NAME} /bin/bash"
         child = pexpect.spawn(command)

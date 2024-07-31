@@ -19,6 +19,7 @@ fi
 mkdir -p "$PROJECT_DIRECTORY"
 mkdir -p "$FILES_DIRECTORY"
 cd "$PROJECT_DIRECTORY"
+
 wget https://raw.githubusercontent.com/aleutheris/pdf_pic_converter/main/main.py
 wget https://raw.githubusercontent.com/aleutheris/pdf_pic_converter/main/Dockerfile
 wget https://raw.githubusercontent.com/aleutheris/pdf_pic_converter/main/requirements.txt
@@ -32,7 +33,7 @@ pip3 install -r requirements.txt
 
 python3 main.py
 
-.venv/bin/deactivate
+deactivate
 
 cd ..
 rm -rf "$PROJECT_DIRECTORY"
