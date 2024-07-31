@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import subprocess
 import pexpect
 from PyQt5.QtWidgets import QApplication, QFileDialog
@@ -99,6 +100,15 @@ def main():
     try:
         clean_up()
 
+        file_path = choose_file()
+        if not file_path:
+            clean_up()
+            return
+
+        file_name = os.path.basename(file_path)
+
+        run_command(["cp", file_path, f"./{FILES_DIRECTORY}/"])
+
         run_command(["docker", "build", "-t", IMAGE_NAME+":latest", "."])
 
         command = f"docker run --name converter -v ./{FILES_DIRECTORY}:/{FILES_DIRECTORY} -it {IMAGE_NAME} /bin/bash"
@@ -109,11 +119,6 @@ def main():
         child.sendline("echo 'Hello from inside the container!'")
         child.expect("# ")
 
-        file_name = choose_file()
-        if not file_name:
-            child.close()
-            clean_up()
-            return
         child.sendline(f"pdftoppm {file_name}.pdf {file_name} -jpeg")
         child.expect("# ")
 
