@@ -12,7 +12,6 @@ doc/.directory
 *.csv
 *.ods
 *.jpg
-*.txt
 *.pyc
 *.json
 *.pkl

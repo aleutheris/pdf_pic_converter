@@ -21,8 +21,16 @@ mkdir -p "$FILES_DIRECTORY"
 cd "$PROJECT_DIRECTORY"
 wget https://raw.githubusercontent.com/aleutheris/pdf_pic_converter/main/main.py
 wget https://raw.githubusercontent.com/aleutheris/pdf_pic_converter/main/Dockerfile
+wget https://raw.githubusercontent.com/aleutheris/pdf_pic_converter/main/requirements.txt
 
-python3 main.py
 
-cd ..
-rm -rf "$PROJECT_DIRECTORY"
+python3 -m venv .venv
+
+source .venv/bin/activate
+
+pip3 install -r requirements.txt
+
+# python3 main.py
+
+# cd ..
+# rm -rf "$PROJECT_DIRECTORY"

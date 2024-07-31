@@ -1,21 +1,32 @@
 #!/usr/bin/env python3
-import os
 import subprocess
 import pexpect
+from PyQt5.QtWidgets import QApplication, QFileDialog
+
 
 PROJECT_DIRECTORY = "pdf_pic_converter"
 FILES_DIRECTORY = "files"
 IMAGE_NAME = "pdf-pic-converter"
 FILE_NAME_PREFIX = "AA_new_"
 
-# If docker is not installed, install it
-# build image
-# run image
-# choose pdf file
-# convert pdf file to images
-# user changes images
-# convert images to pdf
-# delete container and image
+
+def choose_file():
+    app = QApplication([])
+    file_dialog = QFileDialog()
+
+    file_path, _ = file_dialog.getOpenFileName(
+        caption="Select a file",
+        filter="All files (*.*);;Text files (*.txt)"
+    )
+
+    if file_path:
+        print("Selected file:", file_path)
+    else:
+        print("No file selected")
+
+    app.exit()
+
+    return file_path
 
 
 def run_command(command):
@@ -96,7 +107,7 @@ def main():
         child.sendline("echo 'Hello from inside the container!'")
         child.expect("# ")
 
-        file_name = input("Enter the name of the PDF file: ")
+        file_name = choose_file()
         child.sendline(f"pdftoppm {file_name}.pdf {file_name} -jpeg")
         child.expect("# ")
 
