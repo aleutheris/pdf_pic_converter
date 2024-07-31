@@ -97,6 +97,8 @@ def get_image_ids_by_tag(tag, server_address=None):
 
 def main():
     try:
+        clean_up()
+
         run_command(["docker", "build", "-t", IMAGE_NAME+":latest", "."])
 
         command = f"docker run --name converter -v ./{FILES_DIRECTORY}:/{FILES_DIRECTORY} -it {IMAGE_NAME} /bin/bash"

@@ -30,7 +30,9 @@ source .venv/bin/activate
 
 pip3 install -r requirements.txt
 
-# python3 main.py
+python3 main.py
 
-# cd ..
-# rm -rf "$PROJECT_DIRECTORY"
+.venv/bin/deactivate
+
+cd ..
+rm -rf "$PROJECT_DIRECTORY"
