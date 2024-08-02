@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import QApplication, QFileDialog
 PROJECT_DIRECTORY = "pdf_pic_converter"
 FILES_DIRECTORY = "files"
 IMAGE_NAME = "pdf-pic-converter"
-FILE_NAME_PREFIX = "AA_new_"
+FILE_NAME_PREFIX = "New_"
 
 
 def choose_file():
@@ -102,9 +102,10 @@ def main():
             return
 
         file_name = os.path.basename(file_path)
-        file_name = file_name[:-4]
+        file_name = file_name[:-4].replace(" ", "_")
+        new_file_name = f"{FILE_NAME_PREFIX}{file_name}"
 
-        print(f"File name: {file_name}")
+        print(f"File name: {file_name}.pdf")
 
         run_command(["cp", file_path, f"./{FILES_DIRECTORY}/"])
 
@@ -123,12 +124,12 @@ def main():
 
         input("Press enter when you are done editing the images...")
 
-        child.sendline(f"convert {file_name}*.jpg {FILE_NAME_PREFIX}{file_name}.pdf")
+        child.sendline(f"convert *.jpg {new_file_name}.pdf")
         child.expect("# ")
 
         child.close()
 
-        run_command(["mv", f"{FILES_DIRECTORY}/{FILE_NAME_PREFIX}{file_name}.pdf", "./"])
+        run_command(["mv", f"{FILES_DIRECTORY}/{new_file_name}.pdf", "./"])
 
         clean_up()
 
